@@ -1,5 +1,7 @@
 import telebot
 import random
+import os
+from random import choice
 from telebot import types
 from config import TOKEN
 
@@ -68,15 +70,17 @@ def process_sex_step(message):
 Приятно познакомится {user.name}
 Возраст: {user.age}
 Пол: {user.sex}
-Доступные команды: /guess_num, /password, /heh'
+Доступные команды: /guess_num, /password, /heh, /meme'
 """)
     except Exception as e:
         bot.reply_to(message, 'бип буп ошибка')
 
     
-@bot.message_handler(commands=['start'])
-def start_message(message):
-    bot.reply_to(message, "Привет, я тестовый бот у меня есть такие команды как /password, /guess_num, /heh")
+@bot.message_handler(commands=['meme'])
+def send_meme(message):
+    r_meme = choice(os.listdir('images_bot')) 
+    with open(f'images_bot/{r_meme}', 'rb') as f:  
+        bot.send_photo(message.chat.id, f)  
 
 @bot.message_handler(commands=['heh'])
 def send_heh(message):
